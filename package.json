@@ -1,0 +1,28 @@
+{
+  "name": "node-red-contrib-launchpad",
+  "version": "1.0.0",
+  "description": "Launchpad MIDI node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/technocreatives/node-red-contrib-launchpad.git"
+  },
+  "keywords": [
+    "node-red",
+    "launchpad",
+    "midi"
+  ],
+  "node-red": {
+    "nodes": {
+      "launchpad": "lib/launchpad.js"
+    }
+  },
+  "author": "oskar.hagberg@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/technocreatives/node-red-contrib-launchpad/issues"
+  },
+  "homepage": "https://github.com/technocreatives/node-red-contrib-launchpad#readme",
+  "dependencies": {
+    "midi-launchpad": "^1.0.3"
+  }
+}

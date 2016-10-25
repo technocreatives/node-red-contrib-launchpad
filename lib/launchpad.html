@@ -1,0 +1,183 @@
+<!-- Launchpad Node (Config) -->
+
+<script type="text/x-red" data-template-name="launchpad">
+
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-user"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-config-input-port" style="width: auto"> Port</label>
+        <input type="text" id="node-config-input-port" style="width: 50px">
+        <input type="checkbox" id="node-config-input-initanim" style="margin-left: 30px; height: 1em;display: inline-block; width: auto; vertical-align: middle;">
+        <label for="node-config-input-initanim" style="width: auto;" >Init animation</label>
+    </div>
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('launchpad',{
+        category: 'config',
+        defaults: {
+            name: { value:"" },
+            port: { value: 0, required: true, validate:RED.validators.number() },
+            initanim: {value: false}
+        },
+        label: function() {
+            return this.name || "Launchpad";
+        }
+    });
+</script>
+
+<!-- In Button -->
+
+<script type="text/x-red" data-template-name="button-in">
+
+    <div class="form-row">
+        <label for="node-input-launchpad"> Launchpad</label>
+        <input type="text" id="node-input-launchpad">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-name"> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-xcoord" style="width: auto"> X</label>
+        <input type="text" id="node-input-xcoord" style="width: 50px">
+        <label for="node-input-ycoord" style="width: auto"> Y</label>
+        <input type="text" id="node-input-ycoord" style="width: 50px">
+    </div>
+
+    <div class="form-row">
+        <input type="checkbox" id="node-input-allbuttons" style="margin-left: 30px; height: 1em;display: inline-block; width: auto; vertical-align: middle;">
+        <label for="node-input-allbuttons" style="width: auto;" >Listen to all buttons</label>
+    </div>
+  
+</script>
+
+<script type="text/x-red" data-help-name="button-in">
+<p>
+  Listens for input from a Launchpad button (or all buttons if no x and y is specified).
+</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('button-in',{
+    category: 'input',
+    color: '#FF9233',
+    defaults: {
+      name: {value: ""},
+      launchpad: {type: 'launchpad', required: true},
+      xcoord: {value: 0, validate:RED.validators.number()}, 
+      ycoord: {value: 0, validate:RED.validators.number()},
+      allbuttons: {value: false}
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: 'TODO.png',
+    label: function() {
+      if(this.name) {
+        return this.name;
+      }
+      if(!this.allbuttons) {
+        return 'button ['+this.xcoord+','+this.ycoord+']';
+      }
+      return 'button [all]';
+    },
+    labelStyle: function() {
+      return this.name?"node_label_italic":"";
+    }
+  });
+</script>
+
+<!-- Out Button -->
+
+<script type="text/x-red" data-template-name="button-out">
+
+    <div class="form-row">
+        <label for="node-input-launchpad"> Launchpad</label>
+        <input type="text" id="node-input-launchpad">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-name"> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-xcoord" style="width: auto"> X</label>
+        <input type="text" id="node-input-xcoord" style="width: 50px">
+        <label for="node-input-ycoord" style="width: auto"> Y</label>
+        <input type="text" id="node-input-ycoord" style="width: 50px">
+    </div>
+
+    <div class="form-row">
+        <input type="checkbox" id="node-input-allbuttons" style="margin-left: 30px; height: 1em;display: inline-block; width: auto; vertical-align: middle;">
+        <label for="node-input-allbuttons" style="width: auto;" >Send to all buttons</label>
+        <div style="width: 300px;">
+          <p>Note that if the originating message comes from a button, the above settings will be ignored and the message will be sent back to the same button</p>
+          <p>To prevent this, <code>delete</code> the <code>msg.__launchpad</code> object.</p>
+        </div>
+    </div>
+
+  
+</script>
+
+<script type="text/x-red" data-help-name="button-out">
+<p>
+  Sets the color of a Launchpad button. Set a valid color code string as payload:
+</p>
+<ul>
+
+  <li><code>red.high</code> or <code>red</code></li>
+  <li><code>red.medium</code></li>
+  <li><code>red.low</code></li>
+
+  <li><code>green.high</code> or <code>green</code></li>
+  <li><code>green.medium</code></li>
+  <li><code>green.low</code></li>
+
+  <li><code>yellow.high</code> or <code>yellow</code></li>
+  <li><code>yellow.medium</code></li>
+  <li><code>yellow.low</code></li>
+
+  <li><code>orange.high</code> or <code>orange</code></li>
+  <li><code>orange.medium</code></li>
+  <li><code>orange.low</code></li>
+
+  <li><code>off</code></li>
+
+</ul>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('button-out',{
+    category: 'output',
+    color: '#FF9233',
+    defaults: {
+      name: {value: ""},
+      launchpad: {type: 'launchpad', required: true},
+      xcoord: {value: 0, validate:RED.validators.number()}, 
+      ycoord: {value: 0, validate:RED.validators.number()},
+      allbuttons: {value: false}
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: 'TODO.png',
+    label: function() {
+      if(this.name) {
+        return this.name;
+      }
+      if(!this.allbuttons) {
+        return 'button ['+this.xcoord+','+this.ycoord+']';
+      }
+      return 'button [all]';
+    },
+    labelStyle: function() {
+      return this.name?"node_label_italic":"";
+    }
+  });
+</script>
